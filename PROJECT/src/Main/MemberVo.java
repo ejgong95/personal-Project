@@ -7,6 +7,7 @@ public class MemberVo {
 	
 	String TITLE;
 	String STAR;
+	String L_YEAR;
 	
 	
 	public MemberVo() {
@@ -44,13 +45,28 @@ public class MemberVo {
 		this.L_NAME = L_NAME;
 		this.GENRE = GENRE;
 	}
-
+/*
+	public MemberVo(String TITLE, String GENRE, String L_YEAR, String STAR) {
+		// TODO Auto-generated constructor stub
+		this.TITLE = TITLE;
+		this.GENRE = GENRE;
+		this.L_YEAR = L_YEAR;
+		this.STAR = STAR;
+	}
+	
+	*/
+	
 	public String getTITLE() {
 		return TITLE;
 	}
 
 	public String getSTAR() {
 		return STAR;
+	}
+
+	public String getGENRE() {
+		// TODO Auto-generated method stub
+		return GENRE;
 	}
 	
 	

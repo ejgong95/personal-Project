@@ -107,18 +107,21 @@ public class MemberDAO { // 데이터 베이스 연결
 
 	}
 
-	public ArrayList<MemberVo> list_3(String genre) {
+	public ArrayList<MemberVo> list_3() {
 		ArrayList<MemberVo> list_3 = new ArrayList<MemberVo>();
 
 		try {
 			connDB();
 
-			String query = "SELECT * FROM LAFTEL_CONTENTS WHERE GENRE = '" + genre + "'";
+			String query = "SELECT * FROM LAFTEL_CONTENTS "; //1. 장르전체출력
 
 			rs = stmt.executeQuery(query);
 			rs.first();
 			System.out.println("rs.getRow() : " + rs.getRow());
-
+			
+			//if checkbox 값
+			
+			
 			if (rs.getRow() == 0) {
 				System.out.println("0 row selected.....");
 			} else {
@@ -129,8 +132,9 @@ public class MemberDAO { // 데이터 베이스 연결
 
 					String TITLE = rs.getString("TITLE");
 					String STAR = rs.getString("STAR");
-
-					MemberVo data = new MemberVo(TITLE, STAR);
+					String GENRE = rs.getString("GENRE");
+					
+					MemberVo data = new MemberVo(TITLE, STAR, GENRE);
 					list_3.add(data);
 				}
 			}
@@ -150,13 +154,13 @@ public class MemberDAO { // 데이터 베이스 연결
 			String query = "SELECT * FROM LAFTEL_CONTENTS WHERE L_YEAR LIKE '" + clicked_year + "%'";
 
 			rs = stmt.executeQuery(query);
-			rs.first();
+//			rs.first();
 			System.out.println("rs.getRow() : " + rs.getRow());
 
-			if (rs.getRow() == 0) {
-				System.out.println("0 row selected.....");
-			} else {
-				System.out.println(rs.getRow() + " row selected...");
+//			if (rs.getRow() == 0) {
+//				System.out.println("0 row selected.....");
+//			} else {
+//				System.out.println(rs.getRow() + " row selected...");
 			//	rs.previous();
 
 				while (rs.next()) {
@@ -167,7 +171,7 @@ public class MemberDAO { // 데이터 베이스 연결
 					MemberVo data = new MemberVo(TITLE, STAR);
 					list_4.add(data);
 				}
-			}
+//			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,9 +244,9 @@ public class MemberDAO { // 데이터 베이스 연결
 		return list_6;
 	}
 
-	public ArrayList<MemberVo_1> list_7(String TITLE, String GENRE, String L_YEAR, String STAR) {
+	public ArrayList<MemberVo> list_7(String TITLE, String GENRE, String L_YEAR, String STAR) {
 		// TODO Auto-generated method stub
-		ArrayList<MemberVo_1> list_7 = new ArrayList<MemberVo_1>();
+		ArrayList<MemberVo> list_7 = new ArrayList<MemberVo>();
 
 		try {
 			connDB();
@@ -260,7 +264,7 @@ public class MemberDAO { // 데이터 베이스 연결
 
 			rs = pstmt.executeQuery();
 
-			MemberVo_1 data = new MemberVo_1(TITLE, GENRE, L_YEAR, STAR);
+			MemberVo data = new MemberVo(TITLE, GENRE, L_YEAR, STAR);
 			list_7.add(data);
 
 		} catch (Exception e) {

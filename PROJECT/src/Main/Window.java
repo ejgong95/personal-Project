@@ -352,10 +352,10 @@ public class Window implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ArrayList<MemberVo_1> list_7 = dao.list_7(m_titleTF.getText(), GENREchoice.getSelectedItem(),
+				ArrayList<MemberVo> list_7 = dao.list_7(m_titleTF.getText(), GENREchoice.getSelectedItem(),
 						m_yearTF.getText(), m_starTF.getText());
 				for (int i = 0; i < list_7.size(); i++) {
-					MemberVo_1 data = (MemberVo_1) list_7.get(i);
+					MemberVo data = (MemberVo) list_7.get(i);
 					String TITLE = m_titleTF.getText();
 					String GENRE = GENREchoice.getSelectedItem();
 					String L_YEAR = m_yearTF.getText();
@@ -554,18 +554,24 @@ public class Window implements ItemListener {
 	}
 
 	// 테이블 세팅 메서드
-	private void tablelist_genreselect(String checked) {
+	private void tablelist_genreselect() {
 
 		// System.out.println(checkbox[i]);
 
-		ArrayList<MemberVo> list_3 = dao.list_3(checked);
+		ArrayList<MemberVo> list_3 = dao.list_3();
 
 		tabledata_genreselect = new String[list_3.size()][2];
 
 		for (int i = 0; i < list_3.size(); i++) {
 			MemberVo data = (MemberVo) list_3.get(i);
+//			System.out.println(checked);
+//			if(checked.equals(data.getGENRE())) {
+//				System.out.println(data.getGENRE());
+//			}
 			String TITLE = data.getTITLE();
 			String STAR = data.getSTAR();
+			
+			
 
 			for (int j = 0; j < 2; j++) {
 				if (j == 0) {
@@ -573,7 +579,6 @@ public class Window implements ItemListener {
 				} else if (j == 1) {
 					tabledata_genreselect[i][j] = STAR;
 				}
-			}
 
 			System.out.println(TITLE + " : " + STAR);
 		}
@@ -590,6 +595,7 @@ public class Window implements ItemListener {
 		// scroll_genreselect.setViewportView(table_genreselect);
 
 		nextpanel_genre.add(scroll_genreselect);
+		}
 
 //		tablelist_genreselect();
 	}
@@ -600,12 +606,19 @@ public class Window implements ItemListener {
 		// TODO Auto-generated method stub
 
 		Object obj = e.getSource();
+		//System.out.println(obj + "@@@@@");
+
 		for (int i = 0; i < checkbox.length; i++) {
 			if (obj == checkbox[i]) {
+				
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					System.out.println("선택ok");
 					checked = checkbox[i].getText();
-					tablelist_genreselect(checked);
+					
+					
+
+	
+					tablelist_genreselect();
 
 				} else {
 					System.out.println("선택해제");
@@ -614,6 +627,7 @@ public class Window implements ItemListener {
 
 			}
 		}
+
 
 		/*
 		 * for (int i = 0; i < checkbox.length; i++) { if (e.getStateChange() ==
@@ -655,8 +669,9 @@ public class Window implements ItemListener {
 		yearChoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
 		for (int i = 0; i < year.length; i++) {
 			yearChoice.add(year[i]);
-			yearChoice.addItemListener(new MyItemListenr_year_choice());
+			
 		}
+		yearChoice.addItemListener(new MyItemListenr_year_choice());
 		nextpanel_year.add(yearChoice);
 
 		// 분기 choicebox생성---------------------------------------------------
@@ -693,7 +708,7 @@ public class Window implements ItemListener {
 				}
 			}
 
-			System.out.println(TITLE + " : " + STAR);
+//			System.out.println(TITLE + " : " + STAR);
 		}
 
 		String col[] = { "작품명", "별점" };
@@ -715,9 +730,9 @@ public class Window implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			// TODO Auto-generated method stub
-
+			System.out.println(e);
 			if (e.getStateChange() == ItemEvent.SELECTED) {
-				System.out.println(yearChoice.getSelectedItem());
+//				System.out.println(yearChoice.getSelectedItem());
 				yearTable(yearChoice.getSelectedItem());
 
 			} else {
