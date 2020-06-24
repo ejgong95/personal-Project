@@ -1,4 +1,6 @@
 package Main;
+
+
 public class MemberVo {
 	private String L_NAME;
 	private String L_ID;

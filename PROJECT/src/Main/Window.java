@@ -4,7 +4,6 @@ import java.awt.Button;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -146,15 +144,17 @@ public class Window implements ItemListener {
 					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 입력하세요");
 				} else {
 					ArrayList<MemberVo> list = dao.list(txtID.getText());
-
+					
+					//txtID.setText(txtID.getText());
+					
 					if (list.size() == 0) {
 						JOptionPane.showMessageDialog(null, "잘못된 아이디 혹은 비밀번호 입니다.");
 
 					} else {
-						JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다.");
-						txtID.setText(txtID.getText());
-						logpanel.setVisible(false);
 
+						JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다.");
+						
+						logpanel.setVisible(false);
 						nextpanel_1();
 
 					}
@@ -336,6 +336,7 @@ public class Window implements ItemListener {
 		ManagerLogInPanel.setBounds(0, 0, 632, 853);
 		frame.getContentPane().add(ManagerLogInPanel);
 		ManagerLogInPanel.setLayout(null);
+		ManagerLogInPanel.setBackground(Color.WHITE);
 
 		JLabel M_id = new JLabel("ID :");
 		M_id.setBounds(96, 66, 62, 18);
@@ -350,7 +351,7 @@ public class Window implements ItemListener {
 		M_pw.setBounds(96, 139, 62, 18);
 		ManagerLogInPanel.add(M_pw);
 
-		JTextField M_pw_tf = new JTextField();
+		JPasswordField M_pw_tf = new JPasswordField();
 		M_pw_tf.setColumns(10);
 		M_pw_tf.setBounds(254, 136, 116, 24);
 		ManagerLogInPanel.add(M_pw_tf);
@@ -365,19 +366,22 @@ public class Window implements ItemListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println(M_id_tf.getText());
-				System.out.println(M_pw.getText());
+				System.out.println(M_pw_tf.getText());
 
-				if (M_id_tf.getText().equals("") || M_pw.getText().equals("")) {
+				if (M_id_tf.getText().equals("") || M_pw_tf.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 입력하세요");
 				} else {
-					ArrayList<MemberVo> list_7 = dao.list_7(M_id_tf.getText());
-
+					
+					M_id_tf.setText(M_id_tf.getText());
+					
+					ArrayList<MemberVo_1> list_7 = dao.list_7(M_id_tf.getText());
+					
 					if (list_7.size() == 0) {
 						JOptionPane.showMessageDialog(null, "잘못된 아이디 혹은 비밀번호 입니다.");
 
 					} else {
 						JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다.");
-						M_pw.setText(M_pw.getText());
+						// M_id_tf.setText(M_id_tf.getText());
 						ManagerLogInPanel.setVisible(false);
 
 						Manager();
@@ -397,11 +401,27 @@ public class Window implements ItemListener {
 		RegisterPanel.setBounds(0, 0, 632, 853);
 		frame.getContentPane().add(RegisterPanel);
 		RegisterPanel.setLayout(null);
-		
+		RegisterPanel.setBackground(Color.WHITE);
+
 		JLabel insert = new JLabel("작품 등록하기");
 		insert.setFont(new Font("굴림", Font.BOLD, 25));
 		insert.setBounds(243, 39, 162, 40);
 		RegisterPanel.add(insert);
+
+		JButton HomeBtn = new JButton(new ImageIcon("homebtn.png"));
+		HomeBtn.setBounds(509, 18, 90, 90);
+		RegisterPanel.add(HomeBtn);
+		HomeBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				RegisterPanel.setVisible(false);
+				logpanel.setVisible(true);
+
+			}
+
+		});
 
 		JLabel m_title = new JLabel("작품명");
 		m_title.setBounds(106, 131, 62, 18);
@@ -410,7 +430,7 @@ public class Window implements ItemListener {
 		m_titleTF = new JTextField();
 		m_titleTF.setBounds(289, 127, 116, 24);
 		RegisterPanel.add(m_titleTF);
-		m_titleTF.setColumns(10);
+		m_titleTF.setColumns(50);
 
 		JLabel m_genre = new JLabel("장르");
 		m_genre.setBounds(106, 201, 62, 18);
@@ -470,7 +490,7 @@ public class Window implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (m_title.getText().equals("")) {
+				if (m_titleTF.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "작품명을 입력해주세요");
 				} else if (GENREchoice.getSelectedItem().toString().equals("-------")) {
 					JOptionPane.showMessageDialog(null, "장르를 선택해주세요");
@@ -498,7 +518,7 @@ public class Window implements ItemListener {
 
 	}
 
-	// 로그인 성공 화면
+	// 로그인 성공 화면----------------------------------------------------------------
 	public void nextpanel_1() {
 		nextpanel_1 = new JPanel();
 		nextpanel_1.setBounds(0, 0, 632, 853);
@@ -510,6 +530,22 @@ public class Window implements ItemListener {
 		welcome.setFont(new Font("맑은 고딕", Font.BOLD, 26));
 		welcome.setBounds(31, 25, 340, 55);
 		nextpanel_1.add(welcome);
+		
+		JButton HomeBtn = new JButton(new ImageIcon("homebtn.png"));
+		HomeBtn.setBounds(509, 18, 90, 90);
+		nextpanel_1.add(HomeBtn);
+		HomeBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				nextpanel_1.setVisible(false);
+				logpanel.setVisible(true);
+
+			}
+
+		});
+		
 
 		tablelist();
 
@@ -688,7 +724,7 @@ public class Window implements ItemListener {
 
 	}
 
-	// 장르별 인기작 만나보기 화면
+	// 장르별 인기작 만나보기 화면-------------------------------------------------------
 
 	public void nextpanel_genre() {
 
@@ -744,7 +780,7 @@ public class Window implements ItemListener {
 
 	}
 
-	// 테이블 세팅 메서드
+	// 테이블 세팅 메서드---------------------------------------------------------------
 	private void tablelist_genreselect(String checked) {
 
 		// System.out.println(checkbox[i]);
@@ -789,7 +825,7 @@ public class Window implements ItemListener {
 //		tablelist_genreselect();
 	}
 
-	// 장르 checkbox 이벤트-------------------------------------
+	// 장르 checkbox 이벤트--------------------------------------------------------------
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
@@ -825,7 +861,8 @@ public class Window implements ItemListener {
 
 	}
 
-	public void nextpanel_year() { // 시대별 인기작 만나보기 화면
+	// 시대별 인기작 만나보기 화면--------------------------------------------------------
+	public void nextpanel_year() {
 		nextpanel_year = new JPanel();
 		nextpanel_year.setBounds(0, 0, 632, 853);
 		frame.getContentPane().add(nextpanel_year);

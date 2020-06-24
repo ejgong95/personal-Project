@@ -1,7 +1,5 @@
 package Main;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -44,6 +42,7 @@ public class MemberDAO { // 데이터 베이스 연결
 				System.out.println("0 row selected.....");
 			} else {
 				System.out.println(rs.getRow() + " row selected...");
+				
 				rs.previous();
 
 				while (rs.next()) {
@@ -252,8 +251,8 @@ public class MemberDAO { // 데이터 베이스 연결
 	}
 	
 	// 관리자 로그인 정보 확인---------------------------------------------------------
-	public ArrayList<MemberVo> list_7(String M_id_tf) {
-		ArrayList<MemberVo> list_7 = new ArrayList<MemberVo>();
+	public ArrayList<MemberVo_1> list_7(String M_id_tf) {
+		ArrayList<MemberVo_1> list_7 = new ArrayList<MemberVo_1>();
 
 		try {
 			connDB();
@@ -263,7 +262,6 @@ public class MemberDAO { // 데이터 베이스 연결
 				query += "where MANAGER_ID = '" + M_id_tf + "'";
 			}
 			System.out.println("SQL : " + query);
-
 			rs = stmt.executeQuery(query);
 			rs.last();
 			System.out.println("rs.getRow() : " + rs.getRow());
@@ -280,7 +278,7 @@ public class MemberDAO { // 데이터 베이스 연결
 					String MANAGER_PW = rs.getString("MANAGER_PW");
 					String MANAGER_NAME = rs.getString("MANAGER_NAME");
 
-					MemberVo data = new MemberVo(MANAGER_ID, MANAGER_PW, MANAGER_NAME);
+					MemberVo_1 data = new MemberVo_1(MANAGER_ID, MANAGER_PW, MANAGER_NAME);
 					list_7.add(data);
 				}
 			}
