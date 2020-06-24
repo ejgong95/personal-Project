@@ -4,6 +4,7 @@ import java.awt.Button;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,14 +32,23 @@ public class Window implements ItemListener {
 	private JFrame frame;
 	private JTextField txtID, IDtf, PWtf, NAMEtf, m_titleTF, m_yearTF, m_starTF;
 
-	private JPanel nextpanel_1, nextpanel_genre, nextpanel_year;
+	private JPanel logpanel, nextpanel_1, nextpanel_genre, nextpanel_year;
 
+	// 이미지출력---------------
+	ImageIcon[] GenreImage = new ImageIcon[5];
+	int index_g = 0;
+	JLabel GenreMeet = new JLabel(GenreImage[index_g]);
+
+	ImageIcon[] YearImage = new ImageIcon[2];
+	int index_y = 0;
+	JLabel YearMeet = new JLabel(YearImage[index_y]);
+
+	// jtable-----------------
 	private JTable tablelist, table_genreselect, table_yearSelected;
 	static JScrollPane scroll, scroll_genreselect, scroll_yearSelected;
 	static DefaultTableModel model, model_genreselect, model_yearSelected;
 	static String[][] tabledata, tabledata_genreselect, tabledata_yearSelected;
-
-	private JCheckBox[] checkbox = new JCheckBox[12];
+	static JCheckBox[] checkbox = new JCheckBox[12];
 	String[] genre = { "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
 
 	String year[] = { "-------", "2020년", "2019년", "2018년", "2017년", "2016년", "2010년대", "2000년대", "1990년대",
@@ -87,8 +98,9 @@ public class Window implements ItemListener {
 
 	}
 
-	public void LogIn() { // 로그인 화면
-		JPanel logpanel = new JPanel();
+	// 로그인 화면--------------------------------------------------
+	public void LogIn() {
+		logpanel = new JPanel();
 		logpanel.setBounds(0, 0, 632, 853);
 		// panel을 frame에 추가
 		frame.getContentPane().add(logpanel);
@@ -123,40 +135,30 @@ public class Window implements ItemListener {
 		logbtn.setBounds(437, 100, 140, 89);
 		logpanel.add(logbtn);
 
-		// 로그인 버튼에 기능 추가
+		// 로그인 버튼에 기능 추가-----------------------------------------------------
 		logbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// String id = "Gong";
-				// String pass = "1234";
-				// txtID.setText("");
-				// txtpsw.setText("");
 
-				ArrayList<MemberVo> list = dao.list(txtID.getText());
+				System.out.println(txtID.getText());
+				System.out.println(txtpsw.getText());
 
-				for (int i = 0; i < list.size(); i++) {
-					MemberVo data = (MemberVo) list.get(i);
+				if (txtID.getText().equals("") || txtpsw.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 입력하세요");
+				} else {
+					ArrayList<MemberVo> list = dao.list(txtID.getText());
 
-					String L_ID = data.getL_ID();
-					String L_PW = data.getL_PW();
+					if (list.size() == 0) {
+						JOptionPane.showMessageDialog(null, "잘못된 아이디 혹은 비밀번호 입니다.");
 
-					if (txtID.getText().equals(L_ID) && txtpsw.getText().equals(L_PW)) {
-
-						JOptionPane.showMessageDialog(null, "You have logged in successfully");
+					} else {
+						JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다.");
+						txtID.setText(txtID.getText());
 						logpanel.setVisible(false);
 
 						nextpanel_1();
 
-					} else {
-						JOptionPane.showMessageDialog(null, "You failed to log in");
-
-					}
-
-					if (txtID.getText().equals("") || txtpsw.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "You failed to log in");
 					}
 				}
-				System.out.println("Click");
-
 			}
 
 		});
@@ -164,7 +166,7 @@ public class Window implements ItemListener {
 		JLabel Ifyoulabel = new JLabel("아직 Laftel회원이 아니신가요?");
 		Ifyoulabel.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
 		Ifyoulabel.setVerticalAlignment(SwingConstants.TOP);
-		Ifyoulabel.setBounds(194, 223, 244, 37);
+		Ifyoulabel.setBounds(194, 228, 244, 37);
 		logpanel.add(Ifyoulabel);
 
 		JButton newBtn = new JButton("Register");
@@ -184,10 +186,15 @@ public class Window implements ItemListener {
 
 		});
 
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\ejgon\\Desktop\\laftel.jpg"));
-		lblNewLabel.setBounds(26, 14, 429, 93);
-		logpanel.add(lblNewLabel);
+		JLabel LogoLabel = new JLabel();
+		LogoLabel.setIcon(new ImageIcon("logo_image.jpg"));
+		LogoLabel.setBounds(26, 26, 140, 50);
+		logpanel.add(LogoLabel);
+
+		JLabel ImageLabel = new JLabel(new ImageIcon("main_image.jpg"));
+		// ImageLabel.setBackground(new Color(255, 255, 255));
+		ImageLabel.setBounds(0, 325, 632, 528);
+		logpanel.add(ImageLabel);
 
 		JButton btnManagement = new JButton("management");
 		btnManagement.setFont(new Font("Arial Black", Font.PLAIN, 10));
@@ -205,14 +212,15 @@ public class Window implements ItemListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				logpanel.setVisible(false);
-				Manager();
+				ManagerLogIn();
+
 			}
 
 		});
 
 	}
 
-	// 회원 등록
+	// 회원 등록-------------------------------------------------------------------
 	public void Register() {
 		JPanel RegisterPanel = new JPanel();
 		RegisterPanel.setBackground(Color.WHITE);
@@ -250,7 +258,7 @@ public class Window implements ItemListener {
 		GENREchoice.setBounds(170, 359, 116, 24);
 		RegisterPanel.add(GENREchoice);
 
-		String[] genre = { "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
+		String[] genre = { "-------", "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
 
 		for (int i = 0; i < genre.length; i++) {
 			GENREchoice.add(genre[i]);
@@ -261,39 +269,127 @@ public class Window implements ItemListener {
 		NAMEtf.setBounds(170, 272, 116, 24);
 		RegisterPanel.add(NAMEtf);
 
-		Button button = new Button("중복확인");
-		button.setBounds(341, 111, 87, 25);
-		RegisterPanel.add(button);
+		Button CheckBtn = new Button("중복확인");
+		CheckBtn.setBounds(341, 111, 87, 25);
+		RegisterPanel.add(CheckBtn);
+
+		CheckBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
 
 		JButton REGISTER = new JButton("JOIN US");
 		REGISTER.setBounds(225, 518, 105, 27);
 		RegisterPanel.add(REGISTER);
+
+		JButton beforebtn = new JButton("뒤로가기");
+		beforebtn.setBounds(14, 12, 89, 36);
+		RegisterPanel.add(beforebtn);
+
+		beforebtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegisterPanel.setVisible(false);
+				logpanel.setVisible(true);
+			}
+
+		});
 
 		REGISTER.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if (IDtf.getText().equals("") || PWtf.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디 혹은 비밀번호를 입력해주세요");
+				} else if (NAMEtf.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "이름을 입력해주세요");
+				} else if (GENREchoice.getSelectedItem().toString().equals("-------")) {
+					JOptionPane.showMessageDialog(null, "좋아하는 장르를 선택해주세요");
+				} else {
+					ArrayList<MemberVo> list_6 = dao.list_6(IDtf.getText(), PWtf.getText(), NAMEtf.getText(),
+							GENREchoice.getSelectedItem());
+					for (int i = 0; i < list_6.size(); i++) {
+						MemberVo data = (MemberVo) list_6.get(i);
+						String L_ID = IDtf.getText();
+						String L_PW = PWtf.getText();
+						String L_NAME = NAMEtf.getText();
+						String FAVORITE_GENRE = GENREchoice.getSelectedItem();
+						// String GENRE = ();
+						System.out.println(L_ID + " : " + L_PW + " : " + L_NAME + " : " + FAVORITE_GENRE);
+					}
 
-				ArrayList<MemberVo> list_6 = dao.list_6(IDtf.getText(), PWtf.getText(), NAMEtf.getText(),
-						GENREchoice.getSelectedItem());
-				for (int i = 0; i < list_6.size(); i++) {
-					MemberVo data = (MemberVo) list_6.get(i);
-					String L_ID = IDtf.getText();
-					String L_PW = PWtf.getText();
-					String L_NAME = NAMEtf.getText();
-					String FAVORITE_GENRE = GENREchoice.getSelectedItem();
-					// String GENRE = ();
-					System.out.println(L_ID + " : " + L_PW + " : " + L_NAME + " : " + FAVORITE_GENRE);
 				}
+			}
+		});
 
+	}
+
+	// manager 로그인 메인 -------------------------------------------------------
+
+	public void ManagerLogIn() {
+		JPanel ManagerLogInPanel = new JPanel();
+		ManagerLogInPanel.setBounds(0, 0, 632, 853);
+		frame.getContentPane().add(ManagerLogInPanel);
+		ManagerLogInPanel.setLayout(null);
+
+		JLabel M_id = new JLabel("ID :");
+		M_id.setBounds(96, 66, 62, 18);
+		ManagerLogInPanel.add(M_id);
+
+		JTextField M_id_tf = new JTextField();
+		M_id_tf.setBounds(254, 74, 116, 24);
+		ManagerLogInPanel.add(M_id_tf);
+		M_id_tf.setColumns(10);
+
+		JLabel M_pw = new JLabel("PASSWORD :");
+		M_pw.setBounds(96, 139, 62, 18);
+		ManagerLogInPanel.add(M_pw);
+
+		JTextField M_pw_tf = new JTextField();
+		M_pw_tf.setColumns(10);
+		M_pw_tf.setBounds(254, 136, 116, 24);
+		ManagerLogInPanel.add(M_pw_tf);
+
+		JButton M_logbtn = new JButton("LOG IN");
+		M_logbtn.setBounds(221, 237, 105, 27);
+		ManagerLogInPanel.add(M_logbtn);
+
+		M_logbtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(M_id_tf.getText());
+				System.out.println(M_pw.getText());
+
+				if (M_id_tf.getText().equals("") || M_pw.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 입력하세요");
+				} else {
+					ArrayList<MemberVo> list_7 = dao.list_7(M_id_tf.getText());
+
+					if (list_7.size() == 0) {
+						JOptionPane.showMessageDialog(null, "잘못된 아이디 혹은 비밀번호 입니다.");
+
+					} else {
+						JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다.");
+						M_pw.setText(M_pw.getText());
+						ManagerLogInPanel.setVisible(false);
+
+						Manager();
+					}
+				}
 			}
 
 		});
 
 	}
 
-	// manager 작품 등록
+	// manager 작품 등록---------------------------------------------------------
 
 	public void Manager() {
 
@@ -301,6 +397,11 @@ public class Window implements ItemListener {
 		RegisterPanel.setBounds(0, 0, 632, 853);
 		frame.getContentPane().add(RegisterPanel);
 		RegisterPanel.setLayout(null);
+		
+		JLabel insert = new JLabel("작품 등록하기");
+		insert.setFont(new Font("굴림", Font.BOLD, 25));
+		insert.setBounds(243, 39, 162, 40);
+		RegisterPanel.add(insert);
 
 		JLabel m_title = new JLabel("작품명");
 		m_title.setBounds(106, 131, 62, 18);
@@ -319,7 +420,7 @@ public class Window implements ItemListener {
 		GENREchoice.setBounds(289, 195, 116, 24);
 		RegisterPanel.add(GENREchoice);
 
-		String[] genre = { "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
+		String[] genre = { "-------", "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
 
 		for (int i = 0; i < genre.length; i++) {
 			GENREchoice.add(genre[i]);
@@ -329,10 +430,27 @@ public class Window implements ItemListener {
 		m_year.setBounds(106, 268, 62, 18);
 		RegisterPanel.add(m_year);
 
-		m_yearTF = new JTextField();
-		m_yearTF.setColumns(10);
-		m_yearTF.setBounds(287, 265, 116, 24);
-		RegisterPanel.add(m_yearTF);
+		// year choice박스--------------------------------------------------------
+
+		yearChoice = new Choice();
+		yearChoice.setBounds(289, 265, 116, 24);
+		yearChoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
+		for (int i = 0; i < year.length; i++) {
+			yearChoice.add(year[i]);
+			yearChoice.addItemListener(new MyItemListenr_year_choice());
+		}
+		RegisterPanel.add(yearChoice);
+
+		// 분기 choicebox생성---------------------------------------------------
+
+		SectionChoice = new Choice();
+		SectionChoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
+		SectionChoice.setBounds(455, 265, 116, 24);
+		for (int i = 0; i < Section.length; i++) {
+			SectionChoice.add(Section[i]);
+			SectionChoice.addItemListener(new MyItemListener_Section_choice());
+		}
+		RegisterPanel.add(SectionChoice);
 
 		JLabel m_star = new JLabel("평가(별점)");
 		m_star.setBounds(106, 331, 62, 18);
@@ -352,16 +470,27 @@ public class Window implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ArrayList<MemberVo> list_7 = dao.list_7(m_titleTF.getText(), GENREchoice.getSelectedItem(),
-						m_yearTF.getText(), m_starTF.getText());
-				for (int i = 0; i < list_7.size(); i++) {
-					MemberVo data = (MemberVo) list_7.get(i);
-					String TITLE = m_titleTF.getText();
-					String GENRE = GENREchoice.getSelectedItem();
-					String L_YEAR = m_yearTF.getText();
-					String STAR = m_starTF.getText();
-					// String GENRE = ();
-					System.out.println(TITLE + " : " + GENRE + " : " + L_YEAR + " : " + STAR);
+				if (m_title.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "작품명을 입력해주세요");
+				} else if (GENREchoice.getSelectedItem().toString().equals("-------")) {
+					JOptionPane.showMessageDialog(null, "장르를 선택해주세요");
+				} else if (m_starTF.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "평가 점수를 입력해주세요");
+				} else if (yearChoice.getSelectedItem().toString().equals("-------")
+						|| SectionChoice.getSelectedItem().toString().equals("-------")) {
+					JOptionPane.showMessageDialog(null, "연도 및 분기를 선택해주세요");
+				} else {
+					ArrayList<MemberVo> list_8 = dao.list_8(m_titleTF.getText(), GENREchoice.getSelectedItem(),
+							m_yearTF.getText(), m_starTF.getText());
+					for (int i = 0; i < list_8.size(); i++) {
+						MemberVo data = (MemberVo) list_8.get(i);
+						String TITLE = m_titleTF.getText();
+						String GENRE = GENREchoice.getSelectedItem();
+						String L_YEAR = m_yearTF.getText();
+						String STAR = m_starTF.getText();
+						// String GENRE = ();
+						System.out.println(TITLE + " : " + GENRE + " : " + L_YEAR + " : " + STAR);
+					}
 				}
 			}
 
@@ -404,7 +533,7 @@ public class Window implements ItemListener {
 
 	}
 
-	// 반가워요페이지 테이블
+	// 반가워요페이지(작품추천)테이블------------------------------------------------------
 	private void tablelist() {
 
 		ArrayList<MemberVo> list_2 = (ArrayList<MemberVo>) dao.list_2(txtID.getText());
@@ -437,7 +566,7 @@ public class Window implements ItemListener {
 
 	}
 
-	// 장르별 or 시대별 선택 화면
+	// 장르별 or 시대별 선택 화면-------------------------------------------------
 
 	public void nextpanel_2() {
 
@@ -447,24 +576,24 @@ public class Window implements ItemListener {
 		frame.getContentPane().add(nextpanel_2);
 		nextpanel_2.setLayout(null);
 
-		JLabel GenreTag = new JLabel("\uC7A5\uB974\uBCC4 \uC778\uAE30\uC791 \uB9CC\uB098\uBCF4\uAE30");
-		GenreTag.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		GenreTag.setBounds(206, 12, 214, 39);
+		JLabel GenreTag = new JLabel("장르별 인기작 만나보기");
+		GenreTag.setFont(new Font("맑은 고딕", Font.BOLD, 23));
+		GenreTag.setBounds(186, 12, 251, 39);
 		nextpanel_2.add(GenreTag);
 
-		JLabel YearTag = new JLabel("\uC2DC\uB300\uBCC4 \uC778\uAE30\uC791 \uB9CC\uB098\uBCF4\uAE30");
-		YearTag.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		YearTag.setBounds(206, 442, 214, 39);
+		JLabel YearTag = new JLabel("시대별 인기작 만나보기");
+		YearTag.setFont(new Font("맑은 고딕", Font.BOLD, 23));
+		YearTag.setBounds(186, 435, 251, 39);
 		nextpanel_2.add(YearTag);
 
 		JButton GenreGo = new JButton("GO!!");
 		GenreGo.setFont(new Font("Arial Black", Font.PLAIN, 19));
-		GenreGo.setBounds(500, 18, 105, 35);
+		GenreGo.setBounds(500, 16, 105, 35);
 		nextpanel_2.add(GenreGo);
 
 		JButton YearGo = new JButton("GO!!");
 		YearGo.setFont(new Font("Arial Black", Font.PLAIN, 19));
-		YearGo.setBounds(500, 446, 105, 35);
+		YearGo.setBounds(500, 438, 105, 35);
 		nextpanel_2.add(YearGo);
 
 		GenreGo.addActionListener(new ActionListener() {
@@ -480,6 +609,67 @@ public class Window implements ItemListener {
 			public void actionPerformed(ActionEvent e) {
 				nextpanel_year();
 				nextpanel_2.setVisible(false);
+			}
+
+		});
+
+		// 장르 이미지 출력--------------------------------------------------------------
+
+		for (int i = 0; i < GenreImage.length; i++) {
+			GenreImage[i] = new ImageIcon("00" + i + ".png");
+			GenreMeet.setIcon(GenreImage[i]);
+		}
+
+		GenreMeet.setBounds(14, 61, 604, 355);
+		nextpanel_2.add(GenreMeet);
+
+		JButton GenreMeetBtn = new JButton("");
+		GenreMeetBtn.setBounds(14, 61, 604, 355);
+		GenreMeetBtn.setBackground(Color.WHITE);
+		GenreMeetBtn.setOpaque(false);
+		nextpanel_2.add(GenreMeetBtn);
+
+		GenreMeetBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("클릭");
+				if (index_g < GenreImage.length) {
+					GenreMeet.setIcon(GenreImage[index_g++]);
+				} else {
+					index_g = 0;
+				}
+			}
+
+		});
+
+		// 연도 이미지 출력--------------------------------------------------------------
+		for (int i = 0; i < YearImage.length; i++) {
+			YearImage[i] = new ImageIcon("0" + i + ".png");
+			YearMeet.setIcon(YearImage[i]);
+		}
+
+		YearMeet.setBounds(14, 486, 604, 355);
+		nextpanel_2.add(YearMeet);
+
+		JButton YearMeetBtn = new JButton("");
+		YearMeetBtn.setBounds(14, 486, 604, 355);
+		YearMeetBtn.setBackground(Color.WHITE);
+		YearMeetBtn.setOpaque(false);
+		nextpanel_2.add(YearMeetBtn);
+
+		YearMeetBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("클릭");
+				if (index_y < YearImage.length) {
+					YearMeet.setIcon(YearImage[index_y++]);
+				} else {
+					index_y = 0;
+				}
 			}
 
 		});
@@ -501,6 +691,7 @@ public class Window implements ItemListener {
 	// 장르별 인기작 만나보기 화면
 
 	public void nextpanel_genre() {
+
 		nextpanel_genre = new JPanel();
 		nextpanel_genre.setBounds(0, 0, 632, 853);
 		frame.getContentPane().add(nextpanel_genre);
@@ -554,7 +745,7 @@ public class Window implements ItemListener {
 	}
 
 	// 테이블 세팅 메서드
-	private void tablelist_genreselect() {
+	private void tablelist_genreselect(String checked) {
 
 		// System.out.println(checkbox[i]);
 
@@ -564,14 +755,12 @@ public class Window implements ItemListener {
 
 		for (int i = 0; i < list_3.size(); i++) {
 			MemberVo data = (MemberVo) list_3.get(i);
-//			System.out.println(checked);
+			System.out.println(checked);
 //			if(checked.equals(data.getGENRE())) {
 //				System.out.println(data.getGENRE());
 //			}
 			String TITLE = data.getTITLE();
 			String STAR = data.getSTAR();
-			
-			
 
 			for (int j = 0; j < 2; j++) {
 				if (j == 0) {
@@ -580,21 +769,21 @@ public class Window implements ItemListener {
 					tabledata_genreselect[i][j] = STAR;
 				}
 
-			System.out.println(TITLE + " : " + STAR);
-		}
-		String col[] = { "작품명", "별점" };
-		model_genreselect = new DefaultTableModel(tabledata_genreselect, col);
-		table_genreselect = new JTable(model_genreselect);
+				System.out.println(TITLE + " : " + STAR);
+			}
+			String col[] = { "작품명", "별점" };
+			model_genreselect = new DefaultTableModel(tabledata_genreselect, col);
+			table_genreselect = new JTable(model_genreselect);
 
-		table_genreselect.setBounds(14, 91, 454, 428);
+			table_genreselect.setBounds(14, 91, 454, 428);
 
-		scroll_genreselect = new JScrollPane(table_genreselect);
-		scroll_genreselect.setBounds(10, 199, 608, 642);
+			scroll_genreselect = new JScrollPane(table_genreselect);
+			scroll_genreselect.setBounds(10, 199, 608, 642);
 
-		// table_genreselect.getTableHeader().setReorderingAllowed(false);
-		// scroll_genreselect.setViewportView(table_genreselect);
+			// table_genreselect.getTableHeader().setReorderingAllowed(false);
+			// scroll_genreselect.setViewportView(table_genreselect);
 
-		nextpanel_genre.add(scroll_genreselect);
+			nextpanel_genre.add(scroll_genreselect);
 		}
 
 //		tablelist_genreselect();
@@ -606,19 +795,16 @@ public class Window implements ItemListener {
 		// TODO Auto-generated method stub
 
 		Object obj = e.getSource();
-		//System.out.println(obj + "@@@@@");
+		// System.out.println(obj + "@@@@@");
 
 		for (int i = 0; i < checkbox.length; i++) {
 			if (obj == checkbox[i]) {
-				
+
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					System.out.println("선택ok");
 					checked = checkbox[i].getText();
-					
-					
 
-	
-					tablelist_genreselect();
+					tablelist_genreselect(checked);
 
 				} else {
 					System.out.println("선택해제");
@@ -627,7 +813,6 @@ public class Window implements ItemListener {
 
 			}
 		}
-
 
 		/*
 		 * for (int i = 0; i < checkbox.length; i++) { if (e.getStateChange() ==
@@ -662,6 +847,17 @@ public class Window implements ItemListener {
 		SectionLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		nextpanel_year.add(SectionLabel);
 
+		JButton beforebtn = new JButton("뒤로가기");
+		beforebtn.setBounds(14, 12, 89, 36);
+		nextpanel_year.add(beforebtn);
+
+		beforebtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nextpanel_year.setVisible(false);
+				nextpanel_2();
+			}
+		});
+
 		// year choice박스--------------------------------------------------------
 
 		yearChoice = new Choice();
@@ -669,7 +865,7 @@ public class Window implements ItemListener {
 		yearChoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
 		for (int i = 0; i < year.length; i++) {
 			yearChoice.add(year[i]);
-			
+
 		}
 		yearChoice.addItemListener(new MyItemListenr_year_choice());
 		nextpanel_year.add(yearChoice);
@@ -795,4 +991,5 @@ public class Window implements ItemListener {
 		}
 
 	}
+
 }
