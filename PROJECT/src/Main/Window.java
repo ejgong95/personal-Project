@@ -228,34 +228,44 @@ public class Window implements ItemListener {
 		frame.getContentPane().add(RegisterPanel);
 		RegisterPanel.setLayout(null);
 
-		JLabel IDregister = new JLabel("ID");
-		IDregister.setBounds(63, 118, 62, 18);
+		JLabel IDregister = new JLabel("ID :");
+		IDregister.setBounds(182, 177, 45, 18);
+		IDregister.setFont(new Font("Arial Black", Font.PLAIN, 22));
 		RegisterPanel.add(IDregister);
-
+		
 		IDtf = new JTextField();
-		IDtf.setBounds(170, 115, 116, 24);
+		IDtf.setBounds(277, 173, 153, 35);
 		RegisterPanel.add(IDtf);
 		IDtf.setColumns(10);
 
-		JLabel PWregister = new JLabel("PASSWORD");
-		PWregister.setBounds(63, 187, 62, 18);
+		JLabel PWregister = new JLabel("PASSWORD :");
+		PWregister.setBounds(66, 246, 161, 18);
+		PWregister.setFont(new Font("Arial Black", Font.PLAIN, 22));
 		RegisterPanel.add(PWregister);
 
 		PWtf = new JTextField();
-		PWtf.setBounds(170, 184, 116, 24);
+		PWtf.setBounds(277, 242, 153, 35);
 		RegisterPanel.add(PWtf);
 		PWtf.setColumns(10);
-
+		
 		JLabel NAMEregister = new JLabel("이름");
-		NAMEregister.setBounds(63, 275, 62, 18);
+		NAMEregister.setBounds(165, 303, 58, 34);
+		NAMEregister.setFont(new Font("맑은 고딕", Font.BOLD, 22));
 		RegisterPanel.add(NAMEregister);
 
+		NAMEtf = new JTextField();
+		NAMEtf.setColumns(10);
+		NAMEtf.setBounds(277, 307, 153, 35);
+		RegisterPanel.add(NAMEtf);
+
 		JLabel GENREregister = new JLabel("좋아하는 장르");
-		GENREregister.setBounds(63, 359, 62, 18);
+		GENREregister.setBounds(66, 371, 161, 24);
+		GENREregister.setFont(new Font("맑은 고딕", Font.BOLD, 22));
 		RegisterPanel.add(GENREregister);
 
 		Choice GENREchoice = new Choice();
-		GENREchoice.setBounds(170, 359, 116, 24);
+		GENREchoice.setBounds(277, 371, 153, 35);
+		GENREchoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
 		RegisterPanel.add(GENREchoice);
 
 		String[] genre = { "-------", "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
@@ -264,13 +274,9 @@ public class Window implements ItemListener {
 			GENREchoice.add(genre[i]);
 		}
 
-		NAMEtf = new JTextField();
-		NAMEtf.setColumns(10);
-		NAMEtf.setBounds(170, 272, 116, 24);
-		RegisterPanel.add(NAMEtf);
 
 		Button CheckBtn = new Button("중복확인");
-		CheckBtn.setBounds(341, 111, 87, 25);
+		CheckBtn.setBounds(485, 173, 96, 35);
 		RegisterPanel.add(CheckBtn);
 
 		CheckBtn.addActionListener(new ActionListener() {
@@ -283,8 +289,8 @@ public class Window implements ItemListener {
 
 		});
 
-		JButton REGISTER = new JButton("JOIN US");
-		REGISTER.setBounds(225, 518, 105, 27);
+		JButton REGISTER = new JButton(new ImageIcon("joinus.png"));
+		REGISTER.setBounds(213, 509, 217, 217);
 		RegisterPanel.add(REGISTER);
 
 		JButton beforebtn = new JButton("뒤로가기");
@@ -337,27 +343,35 @@ public class Window implements ItemListener {
 		frame.getContentPane().add(ManagerLogInPanel);
 		ManagerLogInPanel.setLayout(null);
 		ManagerLogInPanel.setBackground(Color.WHITE);
-
+		
+		JLabel areyoumanager = new JLabel("관리자 로그인");
+		areyoumanager.setFont(new Font("맑은 고딕", Font.BOLD, 23));
+		areyoumanager.setBounds(256, 115, 148, 60);
+		ManagerLogInPanel.add(areyoumanager);
+		
 		JLabel M_id = new JLabel("ID :");
-		M_id.setBounds(96, 66, 62, 18);
+		M_id.setFont(new Font("Arial Black", Font.PLAIN, 27));
+		M_id.setBounds(117, 206, 113, 47);
 		ManagerLogInPanel.add(M_id);
 
 		JTextField M_id_tf = new JTextField();
-		M_id_tf.setBounds(254, 74, 116, 24);
+		M_id_tf.setBounds(316, 206, 206, 47);
 		ManagerLogInPanel.add(M_id_tf);
 		M_id_tf.setColumns(10);
 
 		JLabel M_pw = new JLabel("PASSWORD :");
-		M_pw.setBounds(96, 139, 62, 18);
+		M_pw.setFont(new Font("Arial Black", Font.PLAIN, 22));
+		M_pw.setBounds(117, 299, 185, 47);
 		ManagerLogInPanel.add(M_pw);
 
 		JPasswordField M_pw_tf = new JPasswordField();
 		M_pw_tf.setColumns(10);
-		M_pw_tf.setBounds(254, 136, 116, 24);
+		M_pw_tf.setBounds(316, 299, 206, 47);
 		ManagerLogInPanel.add(M_pw_tf);
 
 		JButton M_logbtn = new JButton("LOG IN");
-		M_logbtn.setBounds(221, 237, 105, 27);
+		M_logbtn.setFont(new Font("Arial Black", Font.PLAIN, 21));
+		M_logbtn.setBounds(261, 396, 128, 67);
 		ManagerLogInPanel.add(M_logbtn);
 
 		M_logbtn.addActionListener(new ActionListener() {
@@ -374,7 +388,7 @@ public class Window implements ItemListener {
 					
 					M_id_tf.setText(M_id_tf.getText());
 					
-					ArrayList<MemberVo_1> list_7 = dao.list_7(M_id_tf.getText());
+					ArrayList<MemberVo> list_7 = dao.list_7(M_id_tf.getText());
 					
 					if (list_7.size() == 0) {
 						JOptionPane.showMessageDialog(null, "잘못된 아이디 혹은 비밀번호 입니다.");
@@ -404,8 +418,8 @@ public class Window implements ItemListener {
 		RegisterPanel.setBackground(Color.WHITE);
 
 		JLabel insert = new JLabel("작품 등록하기");
-		insert.setFont(new Font("굴림", Font.BOLD, 25));
-		insert.setBounds(243, 39, 162, 40);
+		insert.setFont(new Font("맑은 고딕", Font.BOLD, 26));
+		insert.setBounds(223, 70, 197, 52);
 		RegisterPanel.add(insert);
 
 		JButton HomeBtn = new JButton(new ImageIcon("homebtn.png"));
@@ -424,40 +438,42 @@ public class Window implements ItemListener {
 		});
 
 		JLabel m_title = new JLabel("작품명");
-		m_title.setBounds(106, 131, 62, 18);
+		m_title.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+		m_title.setBounds(110, 190, 76, 40);
 		RegisterPanel.add(m_title);
 
 		m_titleTF = new JTextField();
-		m_titleTF.setBounds(289, 127, 116, 24);
-		RegisterPanel.add(m_titleTF);
+		m_titleTF.setBounds(251, 193, 191, 40);
 		m_titleTF.setColumns(50);
+		RegisterPanel.add(m_titleTF);
 
 		JLabel m_genre = new JLabel("장르");
-		m_genre.setBounds(106, 201, 62, 18);
+		m_genre.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+		m_genre.setBounds(110, 242, 76, 39);
 		RegisterPanel.add(m_genre);
 
 		Choice GENREchoice = new Choice();
-		GENREchoice.setBounds(289, 195, 116, 24);
+		GENREchoice.setBounds(251, 244, 191, 40);
+		GENREchoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
 		RegisterPanel.add(GENREchoice);
-
 		String[] genre = { "-------", "판타지", "액션", "로맨스", "개그", "일상", "모험", "순정", "아이돌", "스포츠", "SF", "스릴러", "추리" };
-
+		
 		for (int i = 0; i < genre.length; i++) {
 			GENREchoice.add(genre[i]);
 		}
-
+		
 		JLabel m_year = new JLabel("연도");
-		m_year.setBounds(106, 268, 62, 18);
+		m_year.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+		m_year.setBounds(110, 293, 76, 40);
 		RegisterPanel.add(m_year);
 
 		// year choice박스--------------------------------------------------------
 
 		yearChoice = new Choice();
-		yearChoice.setBounds(289, 265, 116, 24);
+		yearChoice.setBounds(251, 296, 122, 37);
 		yearChoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
 		for (int i = 0; i < year.length; i++) {
 			yearChoice.add(year[i]);
-			yearChoice.addItemListener(new MyItemListenr_year_choice());
 		}
 		RegisterPanel.add(yearChoice);
 
@@ -465,24 +481,24 @@ public class Window implements ItemListener {
 
 		SectionChoice = new Choice();
 		SectionChoice.setFont(new Font("맑은 고딕", Font.PLAIN, 22));
-		SectionChoice.setBounds(455, 265, 116, 24);
+		SectionChoice.setBounds(405, 296, 122, 37);
 		for (int i = 0; i < Section.length; i++) {
 			SectionChoice.add(Section[i]);
-			SectionChoice.addItemListener(new MyItemListener_Section_choice());
 		}
 		RegisterPanel.add(SectionChoice);
 
 		JLabel m_star = new JLabel("평가(별점)");
-		m_star.setBounds(106, 331, 62, 18);
+		m_star.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+		m_star.setBounds(110, 345, 105, 40);
 		RegisterPanel.add(m_star);
 
 		m_starTF = new JTextField();
 		m_starTF.setColumns(10);
-		m_starTF.setBounds(287, 328, 116, 24);
+		m_starTF.setBounds(251, 347, 191, 43);
 		RegisterPanel.add(m_starTF);
 
-		JButton InsertBtn = new JButton("\uB4F1\uB85D\uD558\uAE30");
-		InsertBtn.setBounds(198, 450, 105, 27);
+		JButton InsertBtn = new JButton("등록하기");
+		InsertBtn.setBounds(223, 442, 197, 90);
 		RegisterPanel.add(InsertBtn);
 
 		InsertBtn.addActionListener(new ActionListener() {
@@ -501,12 +517,12 @@ public class Window implements ItemListener {
 					JOptionPane.showMessageDialog(null, "연도 및 분기를 선택해주세요");
 				} else {
 					ArrayList<MemberVo> list_8 = dao.list_8(m_titleTF.getText(), GENREchoice.getSelectedItem(),
-							m_yearTF.getText(), m_starTF.getText());
+							yearChoice.getSelectedItem().toString() + " " + SectionChoice.getSelectedItem().toString(), m_starTF.getText());
 					for (int i = 0; i < list_8.size(); i++) {
 						MemberVo data = (MemberVo) list_8.get(i);
 						String TITLE = m_titleTF.getText();
 						String GENRE = GENREchoice.getSelectedItem();
-						String L_YEAR = m_yearTF.getText();
+						String L_YEAR = yearChoice.getSelectedItem().toString() + " " + SectionChoice.getSelectedItem().toString();
 						String STAR = m_starTF.getText();
 						// String GENRE = ();
 						System.out.println(TITLE + " : " + GENRE + " : " + L_YEAR + " : " + STAR);
@@ -549,7 +565,7 @@ public class Window implements ItemListener {
 
 		tablelist();
 
-		JButton searchothers = new JButton("다른 작품 만나보기");
+		JButton searchothers = new JButton(new ImageIcon("meet.png"));
 		searchothers.setBounds(209, 705, 241, 110);
 		nextpanel_1.add(searchothers);
 
@@ -811,7 +827,7 @@ public class Window implements ItemListener {
 			model_genreselect = new DefaultTableModel(tabledata_genreselect, col);
 			table_genreselect = new JTable(model_genreselect);
 
-			table_genreselect.setBounds(14, 91, 454, 428);
+			//table_genreselect.setBounds(14, 91, 454, 428);
 
 			scroll_genreselect = new JScrollPane(table_genreselect);
 			scroll_genreselect.setBounds(10, 199, 608, 642);
@@ -844,7 +860,9 @@ public class Window implements ItemListener {
 
 				} else {
 					System.out.println("선택해제");
-					table_genreselect.setVisible(false);
+					checked = checkbox[i].getText();
+					tablelist_genreselect(checked);
+					
 				}
 
 			}

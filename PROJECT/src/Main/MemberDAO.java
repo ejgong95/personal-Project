@@ -20,8 +20,8 @@ public class MemberDAO { // 데이터 베이스 연결
 	private Statement stmt;
 	private ResultSet rs;
 
-	
-	// 회원 로그인 정보확인-----------------------------------------------------------------------
+	// 회원 로그인
+	// 정보확인-----------------------------------------------------------------------
 	public ArrayList<MemberVo> list(String txtID) {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 
@@ -42,7 +42,7 @@ public class MemberDAO { // 데이터 베이스 연결
 				System.out.println("0 row selected.....");
 			} else {
 				System.out.println(rs.getRow() + " row selected...");
-				
+
 				rs.previous();
 
 				while (rs.next()) {
@@ -62,7 +62,8 @@ public class MemberDAO { // 데이터 베이스 연결
 		return list;
 	}
 
-	// 좋아하는 작품 목록------------------------------------------------------------------------
+	// 좋아하는 작품
+	// 목록------------------------------------------------------------------------
 	public ArrayList<MemberVo> list_2(String FavoriteGenre) {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 
@@ -99,7 +100,8 @@ public class MemberDAO { // 데이터 베이스 연결
 		return list;
 	}
 
-	// 장르별 작품 조회------------------------------------------------------------------------
+	// 장르별 작품
+	// 조회------------------------------------------------------------------------
 	public ArrayList<MemberVo> list_3() {
 
 		ArrayList<MemberVo> list_3 = new ArrayList<MemberVo>();
@@ -108,7 +110,7 @@ public class MemberDAO { // 데이터 베이스 연결
 			connDB();
 
 			String A = "";
-
+/*
 			if (Window.checkbox[0].isSelected()) {
 				A += " OR GENRE = '" + Window.checkbox[0].getText() + "'";
 
@@ -117,8 +119,16 @@ public class MemberDAO { // 데이터 베이스 연결
 				A += " OR GENRE = '" + Window.checkbox[1].getText() + "'";
 
 			}
+*/
+			
+			for (int i = 0; i < Window.checkbox.length; i++) {
 
-			String query = "SELECT * FROM LAFTEL_CONTENTS WHERE GENRE = ''" + A + "\r\n" + "ORDER BY GENRE";
+				if (Window.checkbox[i].isSelected()) {
+					A += " OR GENRE = '" + Window.checkbox[i].getText() + "'";
+				}
+			}
+
+			String query = "SELECT * FROM LAFTEL_CONTENTS WHERE GENRE = ''" + A + "\r\n" + "ORDER BY STAR";
 
 			System.out.println(query);
 			rs = stmt.executeQuery(query);
@@ -129,7 +139,7 @@ public class MemberDAO { // 데이터 베이스 연결
 				System.out.println("0 row selected.....");
 			} else {
 				System.out.println(rs.getRow() + " row selected...");
-				// rs.previous();
+				//rs.previous();
 
 				while (rs.next()) {
 
@@ -147,8 +157,9 @@ public class MemberDAO { // 데이터 베이스 연결
 		return list_3;
 	}
 
-	// 연도별 작품 조회----------------------------------------------------------------------
-	public ArrayList<MemberVo> list_4(String clicked_year) { 
+	// 연도별 작품
+	// 조회----------------------------------------------------------------------
+	public ArrayList<MemberVo> list_4(String clicked_year) {
 		ArrayList<MemberVo> list_4 = new ArrayList<MemberVo>();
 
 		try {
@@ -182,7 +193,8 @@ public class MemberDAO { // 데이터 베이스 연결
 		return list_4;
 	}
 
-	// 분기별 작품 조회------------------------------------------------------------------------
+	// 분기별 작품
+	// 조회------------------------------------------------------------------------
 	public ArrayList<MemberVo> list_5(String clicked_year, String clicked_Section) {
 		ArrayList<MemberVo> list_5 = new ArrayList<MemberVo>();
 
@@ -218,11 +230,11 @@ public class MemberDAO { // 데이터 베이스 연결
 		}
 		return list_5;
 	}
-	
 
-	// 회원 가입(Register)------------------------------------------------------------------------
+	// 회원
+	// 가입(Register)------------------------------------------------------------------------
 	public ArrayList<MemberVo> list_6(String L_ID, String L_PW, String L_NAME, String FAVORITE_GENRE) {
-		
+
 		ArrayList<MemberVo> list_6 = new ArrayList<MemberVo>();
 
 		try {
@@ -249,10 +261,10 @@ public class MemberDAO { // 데이터 베이스 연결
 		}
 		return list_6;
 	}
-	
+
 	// 관리자 로그인 정보 확인---------------------------------------------------------
-	public ArrayList<MemberVo_1> list_7(String M_id_tf) {
-		ArrayList<MemberVo_1> list_7 = new ArrayList<MemberVo_1>();
+	public ArrayList<MemberVo> list_7(String M_id_tf) {
+		ArrayList<MemberVo> list_7 = new ArrayList<MemberVo>();
 
 		try {
 			connDB();
@@ -278,7 +290,7 @@ public class MemberDAO { // 데이터 베이스 연결
 					String MANAGER_PW = rs.getString("MANAGER_PW");
 					String MANAGER_NAME = rs.getString("MANAGER_NAME");
 
-					MemberVo_1 data = new MemberVo_1(MANAGER_ID, MANAGER_PW, MANAGER_NAME);
+					MemberVo data = new MemberVo(MANAGER_ID, MANAGER_PW, MANAGER_NAME);
 					list_7.add(data);
 				}
 			}
@@ -288,8 +300,6 @@ public class MemberDAO { // 데이터 베이스 연결
 		}
 		return list_7;
 	}
-	
-	
 
 	// 관리자 로그인 후 작품 레코드 삽입--------------------------------------------------
 	public ArrayList<MemberVo> list_8(String TITLE, String GENRE, String L_YEAR, String STAR) {
@@ -321,7 +331,8 @@ public class MemberDAO { // 데이터 베이스 연결
 		return list_8;
 	}
 
-	// DB 연결 확인------------------------------------------------------------------------
+	// DB 연결
+	// 확인------------------------------------------------------------------------
 	public void connDB() {
 		try {
 			Class.forName(driver);
